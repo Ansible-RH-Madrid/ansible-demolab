@@ -26,7 +26,7 @@
     timeout: 300
     operating_system: rhel_7x64
     nics:
-      - name: eth0
+      - name: nic1
         profile_name: "{{ nic_profile }}"
     cloud_init:
       nic_name: eth0

@@ -20,10 +20,11 @@
         port: 22
         host: '{{ vm_ip }}'
         search_regex: OpenSSH
-        delay: 10
+        delay: 3
 
 - name: '[VM_CONFIG] Configure the VMs with the basics'
   hosts: inv
+  gather_facts: false
   remote_user: "{{ user_name }}"
   vars_files:
     - "vault/vault.yml"

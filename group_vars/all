@@ -1,0 +1,36 @@
+### Group Vars General
+
+## General Info
+user_demolab: "tower_user"
+
+## RHVM Cluster Info
+#compatibility_version: 4.1
+schema: "https"
+engine_user: "{{ user_demolab }}@idm.labmad.redhat.com"
+#engine_password: "Go_to_ansible_vault"
+rhv_endpoint: "rhhi.labmad.redhat.com"
+cluster: "RHHI-Cluster"
+storage_domain: "RHV_DATA"
+
+## RHHI Cluster Info
+
+## VM Info
+template: "RHEL7.6"
+vm_name: "test1.labmad.redhat.com"
+vm_mem: "4"
+vm_cores: "2"
+vm_cpu_sockets: "2"
+nic_profile: "ovirtmgmt"
+vm_ip: "10.32.170.248"
+vm_netmask: "255.255.255.0"
+vm_gateway: "10.32.170.254"
+user_name: "root"
+#root_pass: "Go_to_ansible_vault"
+vm_dns: "10.32.170.50"
+vm_dns_search: "labmad.redhat.com"
+
+#size_disk1:  20
+
+## Config VM Specs
+satellite_ca: "http://satellite.labmad.redhat.com/pub/katello-ca-consumer-latest.noarch.rpm"
+satellite_org: "DEMOLAB"

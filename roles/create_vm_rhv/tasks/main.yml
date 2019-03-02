@@ -1,0 +1,92 @@
+---
+
+- name: "[BASTION_VM_RHV][CREATE_VM_RHV] Grab Ovirt Token"
+  ovirt_auth:
+    url: "{{ schema }}://{{ rhv_endpoint }}/ovirt-engine/api"
+    username: "{{ engine_user }}"
+    password: "{{ engine_password }}"
+    insecure: True
+
+- debug:
+    var: hostvars[inventory_hostname]
+
+- name: "[BASTION_VM_RHV][CREATE_VM_RHV] Deploy VMs from template"
+  ovirt_vms:
+    auth: "{{ ovirt_auth }}"
+    cluster: "{{ cluster }}"
+    template: "{{ template }}"
+    name: "{{ vm_name }}"
+    state: running
+    clone: true
+    high_availability: true
+    memory: "{{ vm_mem }}GiB"
+    cpu_cores: "{{ vm_cores }}"
+    cpu_sockets: "{{ vm_cpu_sockets }}"
+    type: server
+    timeout: 300
+    operating_system: rhel_7x64
+    nics:
+      - name: eth0
+        profile_name: "{{ nic_profile }}"
+    cloud_init:
+      nic_name: eth0
+      nic_boot_protocol: static
+      nic_on_boot: true
+      nic_ip_address: "{{ vm_ip }}"
+      nic_netmask: "{{ vm_netmask }}"
+      nic_gateway: "{{ vm_gateway }}"
+      nic_on_boot: true
+      host_name: "{{ vm_name }}"
+      user_name: "{{ user_name }}"
+      root_password: "{{ root_pass }}"
+      dns_servers: "{{ vm_dns }}"
+      dns_search: "{{ vm_dns_search }}"
+      authorized_ssh_keys: "{{ ssh_pub_key }}"
+      custom_script: |
+        runcmd:
+          - echo IPADDR="{{ vm_ip }}" >> /etc/sysconfig/network-scripts/ifcfg-eth0
+          - echo GATEWAY="{{ vm_gateway }}" >> /etc/sysconfig/network-scripts/ifcfg-eth0;
+          - hostnamectl set-hostname "{{ vm_name }}"
+          - systemctl restart network
+    wait: true
+
+# Disks management
+- name: "[BASTION_VM_RHV] Generate VM disks"
+  ovirt_disks:
+    auth: "{{ ovirt_auth }}"
+    name: "{{ inventory_hostname }}_{{ item }}"
+    size: "{{ size_disk1 }}GiB"
+    storage_domain: "{{ storage_domain }}"
+    format: cow
+    interface: virtio_scsi
+    vm_name: "{{ inventory_hostname }}"
+  with_items:
+    - disk1
+  when: size_disk1 is defined
+  tags: disks
+
+# Network Management
+# Define the vlan2 - vlan3
+- name: "[BASTION_VM_RHV]configure extra nics eth2"
+  template:
+    src: ifcfg-eth2.j2
+    dest: /etc/sysconfig/network-scripts/ifcfg-eth2
+    mode: 0664
+  delegate_to: "{{ inventory_hostname }}"
+  when: vlan2 is defined
+
+- name: "[BASTION_VM_RHV] configure extra nics eth3"
+  template:
+    src: ifcfg-eth3.j2
+    dest: /etc/sysconfig/network-scripts/ifcfg-eth3
+    mode: 0664
+  notify: restart_network
+  delegate_to: "{{ inventory_hostname }}"
+  when: vlan3 is defined
+
+- add_host:
+    name: "{{ vm_name }}"
+    groups: "inv"
+    ansible_ssh_host: "{{ vm_ip }}"
+    ansible_ssh_user: "{{ user_name }}"
+    ansible_ssh_pass: "{{ root_pass }}"

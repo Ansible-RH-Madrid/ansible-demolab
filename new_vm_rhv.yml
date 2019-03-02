@@ -1,0 +1,31 @@
+---
+
+- name: "[DEMOLAB] Generate new vm in RHV"
+  hosts: localhost
+  connection: local
+  vars_files:
+    - vault/vault.yml
+  roles:
+    - { role: create_vm_rhv }
+
+- name: '[VM_CONFIG] Check the availaibility of the VM'
+  hosts: inv
+  remote_user: "{{ user_name }}"
+  gather_facts: false
+  vars_files:
+    - "vault/vault.yml"
+  tasks:
+    - name: '[BASTION_VM_RHV][CREATE_VM_RHV] wait for server'
+      wait_for:
+        port: 22
+        host: '{{ vm_ip }}'
+        search_regex: OpenSSH
+        delay: 10
+
+- name: '[VM_CONFIG] Configure the VMs with the basics'
+  hosts: inv
+  remote_user: "{{ user_name }}"
+  vars_files:
+    - "vault/vault.yml"
+  roles:
+    - { role: config_vm_rhv }

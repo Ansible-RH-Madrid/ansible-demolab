@@ -1,0 +1,48 @@
+---
+
+- name: "[VM_CONFIG] Show the hostname of the VM"
+  shell: "/usr/bin/hostname"
+
+## Step 1 - Register to the satellite
+#- name: "[VM_CONFIG] Clean old subscription-manager data"
+#  shell: /usr/bin/subscription-manager clean
+#
+#- name: "[VM_CONFIG] Install Satellite CA"
+#  shell: "/usr/bin/yum localinstall -e 0 -y {{ satellite_ca }}"
+
+#- name: "[VM_CONFIG] Register to Satellite"
+#  redhat_subscription:
+#    state: present
+#    activationkey: "{{ satellite_ak }}"
+#    org_id: "{{ satellite_org }}"
+#    force_register: yes
+
+- name: "[VM_CONFIG] Clear OLD nameserver from /etc/resolv.conf"
+  lineinfile:
+    path: /etc/resolv.conf
+    regexp: "^nameserver"
+    state: absent
+
+- name: "[VM_CONFIG] Set unique nameserver in /etc/resolv.conf"
+  lineinfile:
+    path: /etc/resolv.conf
+    regexp: "^nameserver"
+    line: "nameserver {{ vm_dns }}"
+    state: present
+
+- name: "Set Hostname {{ vm_name }}"
+  hostname:
+     name: "{{ vm_name }}"
+
+
+#- name: Add repository
+#  yum_repository:
+#    name: epel
+#    description: EPEL YUM repo
+#    baseurl: https://download.fedoraproject.org/pub/epel/$releasever/$basearch/
+#
+#- name: Install remaining packages pre-reqs
+#  yum: update_cache=yes name=ovirt-guest-agent-common state=latest
+#
+#- name: Enable ovirt-guest-tools service
+#  systemd: state=started name=ovirt-guest-agent.service

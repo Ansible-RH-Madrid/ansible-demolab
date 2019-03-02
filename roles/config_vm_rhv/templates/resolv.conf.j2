@@ -1,0 +1,7 @@
+search {{ vm_domain }}
+
+{% for ns in vm_dns %}
+nameserver {{ ns }}
+{% endfor %}
+
+

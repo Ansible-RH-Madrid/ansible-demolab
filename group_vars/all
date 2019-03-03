@@ -32,5 +32,6 @@ vm_dns_search: "labmad.redhat.com"
 #size_disk1:  20
 
 ## Config VM Specs
+subs_mode: "satellite"
 satellite_ca: "http://satellite.labmad.redhat.com/pub/katello-ca-consumer-latest.noarch.rpm"
 satellite_org: "DEMOLAB"

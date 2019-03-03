@@ -3,6 +3,9 @@
 ## General Info
 user_demolab: "tower_user"
 
+## Datacenter election
+datacenter: "RHHI"
+
 ## RHVM Cluster Info
 #compatibility_version: 4.1
 schema: "https"

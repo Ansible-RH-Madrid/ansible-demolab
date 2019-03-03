@@ -1,5 +1,23 @@
 ---
 
+- name: "[BASTION_VM_RHV][CREATE_VM_RHV] Select RHVM Datacenter"
+  block:
+    - name:
+      set_fact:
+        rhv_endpoint: "rhvm.labmad.redhat.com"
+        cluster: "DemolabMAD"
+        storage_domain: "RHV_DATA"
+  when: "datacenter == 'RHVM'"
+
+- name: "[BASTION_VM_RHV][CREATE_VM_RHV] Select RHVM Datacenter"
+  block:
+    - name:
+      set_fact:
+        rhv_endpoint: "rhvm.labmad.redhat.com"
+        cluster: "DemolabMAD"
+        storage_domain: "RHV_DATA"
+  when: "datacenter == 'RHHI'"
+
 - name: "[BASTION_VM_RHV][CREATE_VM_RHV] Grab Ovirt Token"
   ovirt_auth:
     url: "{{ schema }}://{{ rhv_endpoint }}/ovirt-engine/api"

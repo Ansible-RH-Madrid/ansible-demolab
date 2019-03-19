@@ -5,7 +5,7 @@
     - name:
       set_fact:
         rhv_endpoint: "rhvm.labmad.redhat.com"
-        cluster: "DemolabMAD"
+        cluster: "Top_Nodes"
         storage_domain: "RHV_DATA"
   when: "datacenter == 'RHVM'"
 

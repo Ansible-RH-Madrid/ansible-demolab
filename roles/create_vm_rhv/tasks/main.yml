@@ -9,11 +9,11 @@
         storage_domain: "RHV_DATA"
   when: "datacenter == 'RHVM'"
 
-- name: "[BASTION_VM_RHV][CREATE_VM_RHV] Select RHVM Datacenter"
+- name: "[BASTION_VM_RHV][CREATE_VM_RHV] Select RHHI Datacenter"
   block:
     - name:
       set_fact:
-        rhv_endpoint: "rhvm.labmad.redhat.com"
+        rhv_endpoint: "rhhi.labmad.redhat.com"
         cluster: "DemolabMAD"
         storage_domain: "RHV_DATA"
   when: "datacenter == 'RHHI'"

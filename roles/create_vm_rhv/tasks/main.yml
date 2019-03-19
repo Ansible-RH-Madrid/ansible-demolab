@@ -14,8 +14,8 @@
     - name:
       set_fact:
         rhv_endpoint: "rhhi.labmad.redhat.com"
-        cluster: "DemolabMAD"
-        storage_domain: "RHV_DATA"
+        cluster: "RHHI-Cluster"
+        storage_domain: "vm-store"
   when: "datacenter == 'RHHI'"
 
 - name: "[BASTION_VM_RHV][CREATE_VM_RHV] Grab Ovirt Token"

@@ -29,7 +29,8 @@
         engine_user: "rcs@internal"
         vm_dns: 10.9.62.86
         vm_search: mbu.labs.redhat.com
-        vm_gateway: 10.9.62.65
+        vm_gateway: 10.9.61.191
+        owner: ""
   when: "datacenter == 'MBU'"
 
 - name: "[BASTION_VM_RHV][CREATE_VM_RHV] Grab Ovirt Token"

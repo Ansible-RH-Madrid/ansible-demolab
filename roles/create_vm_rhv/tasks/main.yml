@@ -27,6 +27,9 @@
         storage_domain: "RHEV_NFS"
         template: "RHEL76_BASE"
         engine_user: "rcs@internal"
+        vm_dns: 10.9.62.86
+        vm_search: mbu.labs.redhat.com
+        vm_gateway: 10.9.62.65
   when: "datacenter == 'MBU'"
 
 - name: "[BASTION_VM_RHV][CREATE_VM_RHV] Grab Ovirt Token"

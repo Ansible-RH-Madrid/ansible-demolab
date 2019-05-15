@@ -26,7 +26,7 @@
         cluster: "Default"
         storage_domain: "RHEV_NFS"
         template: "RHEL76_BASE"
-        engine_user: "rcs"
+        engine_user: "rcs@internal"
   when: "datacenter == 'MBU'"
 
 - name: "[BASTION_VM_RHV][CREATE_VM_RHV] Grab Ovirt Token"

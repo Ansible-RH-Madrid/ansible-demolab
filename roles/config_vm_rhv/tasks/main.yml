@@ -64,8 +64,14 @@
 #    state: started
 #    name: ovirt-guest-agent.service
 #
-#- name: "[CEPH-POC][CONFIG-BASIC] Stop the cloud-init service"
-#  systemd:
-#    name: cloud-init
-#    state: stopped
-#    enabled: no
+- name: "[CEPH-POC][CONFIG-BASIC] Stop the cloud-init service"
+  systemd:
+    name: cloud-init
+    state: stopped
+    enabled: no
+
+- name: "[VM_CONFIG] Install the repositories"
+  yum:
+    update_cache: yes
+    name: ovirt-guest-agent-common
+    state: latest

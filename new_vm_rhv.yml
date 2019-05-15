@@ -20,7 +20,10 @@
         port: 22
         host: '{{ vm_ip }}'
         search_regex: OpenSSH
-        delay: 3
+        delay: 10
+        timeout: 300
+  vars: 
+    ansible_connection: local 
 
 - name: '[VM_CONFIG] Configure the VMs with the basics'
   hosts: inv
